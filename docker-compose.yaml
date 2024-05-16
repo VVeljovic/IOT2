@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  database:
+    container_name: postgres_container2
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: iot
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Veljko22!!!
+    ports:
+      - "5433:5432"
+    networks:
+      - iot
+
+  mosquitto:
+    container_name: mosquitto_container
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    networks:
+      - iot
+
+networks:
+  iot:
+    name: iot
