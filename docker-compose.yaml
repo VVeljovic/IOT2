@@ -22,6 +22,8 @@ services:
       - "9001:9001"
     networks:
       - iot
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
 
 networks:
   iot:
