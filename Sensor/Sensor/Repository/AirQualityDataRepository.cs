@@ -30,7 +30,7 @@ namespace Sensor.Repository
                 connection.Open();
                 using (var cmd = new NpgsqlCommand(queryString, connection))
                 {
-                    cmd.Parameters.AddWithValue("Id", 1);
+                    cmd.Parameters.AddWithValue("Id", 33);
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -39,10 +39,23 @@ namespace Sensor.Repository
                             var airQualityData = new AirQualityData
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("id")),
+                                Date = reader.GetDateTime(reader.GetOrdinal("date")),
+                                Time = reader.GetTimeSpan(reader.GetOrdinal("time")),
                                 CO_GT = reader.GetFloat(reader.GetOrdinal("co_gt")),
-                                PT08_S1_CO = reader.GetInt32(reader.GetOrdinal("PT08_S1_CO"))
+                                PT08_S1_CO = reader.GetInt32(reader.GetOrdinal("PT08_S1_CO")),
+                                NMHC_GT = reader.GetFloat(reader.GetOrdinal("NMHC_GT")),
+                                C6H6_GT = reader.GetFloat(reader.GetOrdinal("C6H6_GT")),
+                                PT08_S2_NMHC = reader.GetFloat(reader.GetOrdinal("PT08_S2_NMHC")),
+                                NOx_GT = reader.GetFloat(reader.GetOrdinal("NOx_GT")),
+                                PT08_S3_NOx = reader.GetFloat(reader.GetOrdinal("PT08_S3_NOx")),
+                                NO2_GT = reader.GetFloat(reader.GetOrdinal("NO2_GT")),
+                                PT08_S4_NO2 = reader.GetFloat(reader.GetOrdinal("PT08_S4_NO2")),
+                                PT08_S5_O3 = reader.GetFloat(reader.GetOrdinal("PT08_S5_O3")),
+                                T = reader.GetFloat(reader.GetOrdinal("T")),
+                                RH = reader.GetFloat(reader.GetOrdinal("RH")),
+                                AH = reader.GetFloat(reader.GetOrdinal("AH"))
                             };
-                            this.sendToTopic("topic", airQualityData);
+                            this.sendToTopic("op",airQualityData);
                         }
                     }
 
