@@ -24,11 +24,29 @@ services:
       - iot
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+
   ekuiper:
     container_name: ekuiper
     image: lfedge/ekuiper
     ports: 
       - "9081:9081"
+    depends_on:
+      - mosquitto
+    networks:
+      - iot
+
+  springbootapp:
+    container_name: event_info_container
+    build:
+      context: C:/Users/veljk/OneDrive/Desktop/Cetvrta godina/IOT2/RestApi
+      dockerfile: Dockerfile
+    environment:
+      - spring.application.name=RestApi
+      - mqtt.broker=tcp://localhost:1883
+      - mqtt.clientId=springBootClient
+      - mqtt.topic=topic
+    ports:
+      - "8080:8080"
     depends_on:
       - mosquitto
     networks:

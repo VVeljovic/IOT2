@@ -15,6 +15,8 @@ public class MqttConfig implements MqttCallback {
 
     @Value("${mqtt.topic}")
     private String topic;
+
+    public String messageFromTopic;
     @Bean
     public MqttClient mqttClient() throws  MqttException {
         MqttClient mqttClient = new MqttClient(broker, clientId, new MemoryPersistence());
@@ -27,7 +29,6 @@ public class MqttConfig implements MqttCallback {
         mqttClient.subscribe(topic);
         return mqttClient;
     }
-
     @Override
     public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
 
@@ -41,6 +42,7 @@ public class MqttConfig implements MqttCallback {
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         String payload = new String(mqttMessage.getPayload());
+        this.messageFromTopic = payload;
         System.out.println("Poruka primljena sa topica: " + topic + ", sadržaj: " + payload);
     }
 }

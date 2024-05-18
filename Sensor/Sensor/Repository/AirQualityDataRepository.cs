@@ -31,7 +31,7 @@ namespace Sensor.Repository
                 connection.Open();
                 using (var cmd = new NpgsqlCommand(queryString, connection))
                 {
-                    cmd.Parameters.AddWithValue("Id", 33);
+                    cmd.Parameters.AddWithValue("Id", 34);
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
