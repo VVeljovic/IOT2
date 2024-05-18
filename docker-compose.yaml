@@ -24,6 +24,15 @@ services:
       - iot
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+  ekuiper:
+    container_name: ekuiper
+    image: lfedge/ekuiper
+    ports: 
+      - "9081:9081"
+    depends_on:
+      - mosquitto
+    networks:
+      - iot
 
 networks:
   iot:

@@ -22,6 +22,7 @@ namespace Sensor.Repository
         }//172.18.0.3
         public void SetupNotification()
         {
+            //promeni na port 5433 i database = iot
             var connectionString = "Server=localhost ; port=5432 ; user id=postgres; password=Veljko22!!!; database=Internet of things ; ";
 
             var queryString = "SELECT * FROM air_quality WHERE \"Id\" = @Id;";
@@ -55,7 +56,7 @@ namespace Sensor.Repository
                                 RH = reader.GetFloat(reader.GetOrdinal("RH")),
                                 AH = reader.GetFloat(reader.GetOrdinal("AH"))
                             };
-                            this.sendToTopic("op",airQualityData);
+                            this.sendToTopic("topic",airQualityData);
                         }
                     }
 
