@@ -1,6 +1,6 @@
 package internet.of.things.RestApi;
 
-import internet.of.things.RestApi.config.MqttConfig;
+//import internet.of.things.RestApi.config.MqttConfig;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.beans.factory.annotation.Autowired;

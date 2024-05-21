@@ -1,0 +1,4 @@
+{
+    "sql": "CREATE STREAM temperature_stream (temperature float) WITH (DATASOURCE = 'temperature/topic', FORMAT = 'json', TYPE = 'mqtt')"
+  }
+  

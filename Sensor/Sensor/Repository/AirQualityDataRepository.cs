@@ -25,16 +25,16 @@ namespace Sensor.Repository
             //promeni na port 5433 i database = iot
             var connectionString = "Server=localhost ; port=5432 ; user id=postgres; password=Veljko22!!!; database=Internet of things ; ";
 
-            var queryString = "SELECT * FROM air_quality WHERE \"Id\" = @Id;";
+            var queryString = "SELECT * FROM air_quality WHERE \"Id\" <= @Id;";
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
                 using (var cmd = new NpgsqlCommand(queryString, connection))
                 {
-                    cmd.Parameters.AddWithValue("Id", 34);
+                    cmd.Parameters.AddWithValue("Id", 35);
                     using (var reader = cmd.ExecuteReader())
                     {
-                        if (reader.Read())
+                        while (reader.Read())
                         {
 
                             var airQualityData = new AirQualityData
@@ -52,11 +52,12 @@ namespace Sensor.Repository
                                 NO2_GT = reader.GetFloat(reader.GetOrdinal("NO2_GT")),
                                 PT08_S4_NO2 = reader.GetFloat(reader.GetOrdinal("PT08_S4_NO2")),
                                 PT08_S5_O3 = reader.GetFloat(reader.GetOrdinal("PT08_S5_O3")),
-                                T = reader.GetFloat(reader.GetOrdinal("T")),
+                                T = 100,
                                 RH = reader.GetFloat(reader.GetOrdinal("RH")),
                                 AH = reader.GetFloat(reader.GetOrdinal("AH"))
                             };
                             this.sendToTopic("topic",airQualityData);
+                            Thread.Sleep(1000);
                         }
                     }
 
@@ -83,7 +84,7 @@ namespace Sensor.Repository
             {
                 
                 mqttClient.Connect(clientId);
-                mqttClient.Publish(topic, Encoding.UTF8.GetBytes(jsonData), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, false);
+                mqttClient.Publish(topic, Encoding.UTF8.GetBytes(jsonData), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
                 Console.WriteLine($"Message '{jsonData}' published to topic '{topic}'");
 
                 
