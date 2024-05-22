@@ -1,12 +1,12 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  database:
-    container_name: postgres_container2
+  postgres:
+    container_name: postgres
     image: postgres
     restart: always
     environment:
-      POSTGRES_DB: iot
+      POSTGRES_DB: Internet of things
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Veljko22!!!
     ports:
@@ -34,7 +34,7 @@ services:
     volumes:
       - /tmp/manager_data:/ekuiper-manager/data
     environment:
-      DEFAULT_EKUIPER_ENDPOINT: "http://ekuiper:9081" 
+      DEFAULT_EKUIPER_ENDPOINT: "http://ekuiper:9081"
     networks:
       - iot
   ekuiper:
@@ -54,23 +54,52 @@ services:
       KUIPER__BASIC__IGNORECASE: "false"
     networks:
       - iot
-      
-  # springbootapp:
-  #   container_name: event_info_container
-  #   build:
-  #     context: C:/Users/veljk/OneDrive/Desktop/Cetvrta godina/IOT2/RestApi
-  #     dockerfile: Dockerfile
-  #   environment:
-  #     - spring.application.name=RestApi
-  #     - mqtt.broker=tcp://localhost:1883
-  #     - mqtt.clientId=springBootClient
-  #     - mqtt.topic=topic
-  #   ports:
-  #     - "8080:8080"
-  #   depends_on:
-  #     - mosquitto
-  #   networks:
-  #     - iot
+
+  sensor:
+    container_name: sensor_container
+    build:
+      context: Sensor
+      dockerfile: Dockerfile
+    ports:
+      - "6060:6060"
+    networks:
+      - iot
+    depends_on:
+      - postgres
+      - mosquitto
+
+  analytics:
+    container_name: analytics_container
+    build:
+      context: Analytics
+      dockerfile: Dockerfile
+    ports:
+      - "7070:7070"
+    networks:
+      - iot
+    depends_on:
+      - manager
+      - mosquitto
+      - ekuiper
+
+  springbootapp:
+    container_name: event_info_container
+    build:
+      context: C:/Users/veljk/OneDrive/Desktop/Cetvrta godina/IOT2/RestApi
+      dockerfile: Dockerfile
+    environment:
+      - spring.application.name=RestApi
+      - mqtt.broker=tcp://mosquitto:1883
+      - mqtt.clientId=springBootClient
+      - mqtt.topic=eventInfoTopic
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - mosquitto
+      - ekuiper
+    networks:
+      - iot
 
 networks:
   iot:

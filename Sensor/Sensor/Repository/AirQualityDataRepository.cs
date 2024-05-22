@@ -22,8 +22,7 @@ namespace Sensor.Repository
         }//172.18.0.3
         public void SetupNotification()
         {
-            //promeni na port 5433 i database = iot
-            var connectionString = "Server=localhost ; port=5432 ; user id=postgres; password=Veljko22!!!; database=Internet of things ; ";
+            var connectionString = "Server=postgres;Port=5432;Database=Internet of things;Username=postgres;password=Veljko22!!!";
 
             var queryString = "SELECT * FROM air_quality WHERE \"Id\" <= @Id;";
             using (var connection = new NpgsqlConnection(connectionString))
@@ -31,7 +30,7 @@ namespace Sensor.Repository
                 connection.Open();
                 using (var cmd = new NpgsqlCommand(queryString, connection))
                 {
-                    cmd.Parameters.AddWithValue("Id", 35);
+                    cmd.Parameters.AddWithValue("Id", 500);
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -56,7 +55,7 @@ namespace Sensor.Repository
                                 RH = reader.GetFloat(reader.GetOrdinal("RH")),
                                 AH = reader.GetFloat(reader.GetOrdinal("AH"))
                             };
-                            this.sendToTopic("topic",airQualityData);
+                            this.sendToTopic("topic", airQualityData);
                             Thread.Sleep(1000);
                         }
                     }
@@ -67,27 +66,27 @@ namespace Sensor.Repository
         }
         public async void sendToTopic(string topic, AirQualityData airQualityData)
         {
-            
-            string brokerAddress = "localhost"; 
+
+            string brokerAddress = "mosquitto";
             int brokerPort = 1883;
 
             string jsonData = JsonConvert.SerializeObject(airQualityData);
-           
+
             string clientId = Guid.NewGuid().ToString();
 
-            
+
             MqttClient mqttClient = new MqttClient(brokerAddress, brokerPort, false, null, null, MqttSslProtocols.None);
 
 
 
             try
             {
-                
+
                 mqttClient.Connect(clientId);
                 mqttClient.Publish(topic, Encoding.UTF8.GetBytes(jsonData), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
                 Console.WriteLine($"Message '{jsonData}' published to topic '{topic}'");
 
-                
+
                 mqttClient.Disconnect();
 
             }

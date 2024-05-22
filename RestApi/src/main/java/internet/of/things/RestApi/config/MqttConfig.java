@@ -5,6 +5,10 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 public class MqttConfig implements MqttCallback {
     @Value("${mqtt.broker}")
@@ -16,7 +20,7 @@ public class MqttConfig implements MqttCallback {
     @Value("${mqtt.topic}")
     private String topic;
 
-    public String messageFromTopic;
+    private List<String> messagesFromTopic =new ArrayList<>();
     @Bean
     public MqttClient mqttClient() throws  MqttException {
         MqttClient mqttClient = new MqttClient(broker, clientId, new MemoryPersistence());
@@ -42,7 +46,11 @@ public class MqttConfig implements MqttCallback {
     @Override
     public void messageArrived(String s, MqttMessage mqttMessage) throws Exception {
         String payload = new String(mqttMessage.getPayload());
-        this.messageFromTopic = payload;
+        messagesFromTopic.add(payload);
         System.out.println("Poruka primljena sa topica: " + topic + ", sadržaj: " + payload);
+    }
+
+    public List<String> getMessageList() {
+        return messagesFromTopic;
     }
 }
