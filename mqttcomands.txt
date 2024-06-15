@@ -1,4 +1,4 @@
-docker exec -it 1bebfc486734 mosquitto_sub -h localhost -t "#" -v
+docker exec -it 4f416f9f5daf mosquitto_sub -h localhost -t "#" -v
 docker exec -it 1bebfc486734 mosquitto_pub -h localhost -t airtopic -m '{"Id":1,"Date":"2024-05-21T12:34:56Z","Time":"12:34:56","CO_GT":1,"PT08_S1_CO":0.2,"NMHC_GT":0.3,"C6H6_GT":0.4,"PT08_S2_NMHC":0.5,"NOx_GT":0.6,"PT08_S3_NOx":0.7,"NO2_GT":0.8,"PT08_S4_NO2":0.9,"PT08_S5_O3":1.0,"T":22.5,"RH":50.0,"AH":0.005}'
 kuiper
 docker exec -it ekuiper /bin/sh

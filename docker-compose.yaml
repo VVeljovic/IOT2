@@ -1,4 +1,4 @@
-version: "3.8"
+
 
 services:
   postgres:
@@ -6,13 +6,13 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_DB: Internet of things
+      POSTGRES_DB: IOT
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Veljko22!!!
+      POSTGRES_PASSWORD: Veljko22!!! 
     ports:
       - "5433:5432"
     networks:
-      - iot
+      - iotdva
 
   mosquitto:
     container_name: mosquitto_container
@@ -21,7 +21,7 @@ services:
       - "1883:1883"
       - "9001:9001"
     networks:
-      - iot
+      - iotdva
     volumes:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
 
@@ -36,7 +36,8 @@ services:
     environment:
       DEFAULT_EKUIPER_ENDPOINT: "http://ekuiper:9081"
     networks:
-      - iot
+      - iotdva
+
   ekuiper:
     image: lfedge/ekuiper:1.8.0
     ports:
@@ -53,20 +54,7 @@ services:
       KUIPER__BASIC__CONSOLELOG: "true"
       KUIPER__BASIC__IGNORECASE: "false"
     networks:
-      - iot
-
-  sensor:
-    container_name: sensor_container
-    build:
-      context: Sensor
-      dockerfile: Dockerfile
-    ports:
-      - "6060:6060"
-    networks:
-      - iot
-    depends_on:
-      - postgres
-      - mosquitto
+      - iotdva
 
   analytics:
     container_name: analytics_container
@@ -76,11 +64,26 @@ services:
     ports:
       - "7070:7070"
     networks:
-      - iot
+      - iotdva
     depends_on:
       - manager
       - mosquitto
       - ekuiper
+
+  sensor:
+    container_name: sensor_container
+    build:
+      context: Sensor
+      dockerfile: Dockerfile
+    ports:
+      - "6060:6060"
+    networks:
+      - iotdva
+    depends_on:
+      - postgres
+      - mosquitto
+    volumes:
+      - ./AirQuality.csv:/sensor/config/AirQuality.csv
 
   springbootapp:
     container_name: event_info_container
@@ -99,8 +102,8 @@ services:
       - mosquitto
       - ekuiper
     networks:
-      - iot
+      - iotdva
 
 networks:
-  iot:
-    name: iot
+  iotdva:
+    name: iotdva

@@ -14,7 +14,7 @@ namespace Analytics
     {
         private MqttClient mqttClient;
         private List<string> messages;
-        private string[] topics = { "topic", "resultTopic" };
+        private string[] topics = { "air_topic", "resultTopic" };
         private float PT08_S1_CO = 1300;
         private float PT08_S2_NMHC = 1100;
         private float PT08_S3_NOx = 1500;
@@ -22,10 +22,10 @@ namespace Analytics
         private float PT08_S5_O3 = 1700;
         public MsAnalytics()
         {
-            this.getDataFromTopic("topic");
+            this.getDataFromTopic();
             messages = new List<string>(); 
         }
-        public void getDataFromTopic(string topic)
+        public void getDataFromTopic()
         {
             string brokerAddress = "mosquitto";
             int brokerPort = 1883;
@@ -50,8 +50,8 @@ namespace Analytics
             if (topic == topics[0])
             {
                 
-                messages.Add(message);
-                this.mqttClient.Publish("airtopic", Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, false);
+               Console.WriteLine(message);
+                this.mqttClient.Publish("eKuiperTopic", Encoding.UTF8.GetBytes(message), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, false);
             }
             else if (topic == topics[1])
             {
