@@ -18,10 +18,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Data;
 namespace Sensor.Repository
 {
-    internal class AirQualityDataRepository
+    internal class AirQualityService
     {
         List<AirQualityData> airQualityarrayFromCsv = new List<AirQualityData>();
-        public AirQualityDataRepository()
+        public AirQualityService()
         {
            
 
@@ -68,7 +68,7 @@ namespace Sensor.Repository
                 }
             }
         }
-        public void SetupNotification()
+        public void ReadFromDb()
         {
             var connectionString = "Server=postgres;Port=5432;Database=IOT;Username=postgres;password=Veljko22!!!";
 
