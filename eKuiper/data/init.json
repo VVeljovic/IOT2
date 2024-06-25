@@ -1,0 +1,9 @@
+{
+  "streams": {
+    "eKuiperTopic": "\n              CREATE STREAM eKuiperTopic\n              ()\n              WITH (DATASOURCE=\"eKuiperTopic\", FORMAT=\"json\", TYPE=\"mqtt\", SHARED=\"false\", );\n          "
+  },
+  "tables": {},
+  "rules": {
+    "myRule": "{\"id\":\"myRule\",\"name\":\"\",\"sql\":\"SELECT * \\r\\nFROM eKuiperTopic \\r\\nWHERE PT08_S1_CO > 1500 \\r\\n   OR PT08_S2_NMHC > 1400 \\r\\n   OR PT08_S3_NOx > 1700 \\r\\n   OR PT08_S4_NO2 > 1700 \\r\\n   OR PT08_S5_O3 > 1900;\",\"actions\":[{\"mqtt\":{\"server\":\"mosquitto:1883\",\"topic\":\"resultTopic\",\"protocolVersion\":\"3.1.1\",\"runAsync\":false,\"omitIfEmpty\":false,\"sendSingle\":true,\"bufferLength\":1024,\"enableCache\":false,\"format\":\"json\"}}],\"options\":{\"restartStrategy\":{}}}"
+  }
+}

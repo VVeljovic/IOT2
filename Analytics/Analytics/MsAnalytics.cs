@@ -15,11 +15,11 @@ namespace Analytics
         private MqttClient mqttClient;
         private List<string> messages;
         private string[] topics = { "air_topic", "resultTopic" };
-        private float PT08_S1_CO = 1300;
-        private float PT08_S2_NMHC = 1100;
-        private float PT08_S3_NOx = 1500;
-        private float PT08_S4_NO2 = 1600;
-        private float PT08_S5_O3 = 1700;
+        private float PT08_S1_CO = 1500;
+        private float PT08_S2_NMHC = 1400;
+        private float PT08_S3_NOx = 1700;
+        private float PT08_S4_NO2 = 1700;
+        private float PT08_S5_O3 = 1900;
         public MsAnalytics()
         {
             this.getDataFromTopic();
