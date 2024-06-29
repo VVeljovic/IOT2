@@ -78,7 +78,7 @@ namespace Sensor.Repository
                 connection.Open();
                 using (var cmd = new NpgsqlCommand(queryString, connection))
                 {
-                    cmd.Parameters.AddWithValue("Id", 500);
+                    cmd.Parameters.AddWithValue("Id", 1000);
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -155,7 +155,7 @@ namespace Sensor.Repository
             var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
             { HasHeaderRecord = false};
 
-            //string csvFilePath = "C:\\Users\\veljk\\OneDrive\\Desktop\\Cetvrta godina\\IOT2\\AirQuality.csv";
+
             string csvFilePath = "/sensor/config/AirQuality.csv";
                 using (var reader = new StreamReader(csvFilePath))
                 using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
@@ -164,7 +164,7 @@ namespace Sensor.Repository
                     {
                         var record = csv.GetRecord<AirQualityData>();
                         airQualityarrayFromCsv.Add(record);
-                       // Console.WriteLine($"Date: {record.Date}, Time: {record.Time},AH:{record.AH}, CO(GT): {record.CO_GT}, PT08.S1(CO): {record.PT08_S1_CO}");
+                       
                     }
                    
                 }

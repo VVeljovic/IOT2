@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using Newtonsoft.Json.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
-using Newtonsoft.Json.Linq;
 
 namespace Analytics
 {
@@ -83,12 +78,12 @@ namespace Analytics
                 this.mqttClient.Publish("eventInfoTopic", Encoding.UTF8.GetBytes(messageToPublic), MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE, false);
             }
         }
-        private string FormMeasurementMessage(string pollutant, float currentValue, float previousValue)
+        private string FormMeasurementMessage(string parameter, float currentValue, float normalValue)
         {
-            float change = currentValue - previousValue;
-            float percentageChange = (change / previousValue) * 100;
+            float change = currentValue - normalValue;
+            float percentageChange = (change / normalValue) * 100;
             string direction = change > 0 ? "increase" : "decrease";
-            string measurementMessage = $" Measured {pollutant} value is {currentValue} which is a {Math.Abs(percentageChange):0.00}% {direction} from the previous value of {previousValue}.";
+            string measurementMessage = $" Measured {parameter} value is {currentValue} which is a {Math.Abs(percentageChange):0.00}% {direction} from the normal value of {normalValue}.";
             return measurementMessage;
         }
 

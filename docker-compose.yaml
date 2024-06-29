@@ -82,11 +82,6 @@ services:
     build:
       context: C:/Users/veljk/OneDrive/Desktop/Cetvrta godina/IOT2/RestApi
       dockerfile: Dockerfile
-    environment:
-      - spring.application.name=RestApi
-      - mqtt.broker=tcp://mosquitto:1883
-      - mqtt.clientId=springBootClient
-      - mqtt.topic=eventInfoTopic
     ports:
       - "8080:8080"
     depends_on:
